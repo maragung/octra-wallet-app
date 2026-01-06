@@ -1026,34 +1026,40 @@ impl eframe::App for WalletApp {
                 return;
             }
 
-            // PERBAIKAN: Clone wallet state agar tidak meminjam `self` secara permanen di scope ini
             let mut current_wallet = self.wallets[self.selected_wallet_idx].clone();
 
             ui.heading("Wallet Details");
-            egui::ScrollArea::horizontal().id_source("info_scroll").show(ui, |ui| {
-                egui::Grid::new("info_grid").striped(true).min_col_width(100.0).show(ui, |ui| {
-                    ui.label("Filename:"); ui.label(&current_wallet.filename); ui.end_row();
-                    
-                    ui.label("Address:"); 
-                    ui.horizontal(|ui| {
-                        // Gunakan variable clone (current_wallet) yang sudah mutable
-                        ui.add(egui::TextEdit::singleline(&mut current_wallet.address)
-                            .desired_width(ui.available_width() - 40.0)); 
-                        
-                        if ui.button("📋").on_hover_text("Copy Address").clicked() {
-                            ui.output_mut(|o| o.copied_text = current_wallet.address.clone());
-                        }
-                    });
-                    ui.end_row();
+            ui.horizontal(|ui| {
+                ui.label("Filename:");
+                ui.strong(&current_wallet.filename);
+            });
+            
+            ui.add_space(5.0);
+            
+            ui.label("Address:");
+            ui.horizontal(|ui| {
+                ui.add(egui::TextEdit::singleline(&mut current_wallet.address)
+                    .desired_width(ui.available_width() - 40.0)); 
+                
+                if ui.button("📋").on_hover_text("Copy Address").clicked() {
+                    ui.output_mut(|o| o.copied_text = current_wallet.address.clone());
+                }
+            });
 
-                    ui.label("Balance:"); ui.heading(format!("{:.6} OCT", current_wallet.balance)); ui.end_row();
-                    ui.label("Nonce:"); ui.label(format!("{}", current_wallet.nonce)); ui.end_row();
-                });
+            ui.add_space(5.0);
+
+            egui::Grid::new("info_grid_bal").striped(true).min_col_width(100.0).show(ui, |ui| {
+                ui.label("Balance:");
+                ui.heading(format!("{:.6} OCT", current_wallet.balance));
+                ui.end_row();
+                
+                ui.label("Nonce:");
+                ui.label(format!("{}", current_wallet.nonce));
+                ui.end_row();
             });
             
             ui.horizontal(|ui| {
                 if ui.button("🔄 Refresh Balance").clicked() {
-                     // Pass reference ke clone
                      let rpc = self.get_rpc(&current_wallet);
                      let _ = self.tx_sender.send(AppAction::RefreshBalance { idx: self.selected_wallet_idx, rpc });
                 }
@@ -1183,7 +1189,5 @@ fn main() -> eframe::Result<()> {
     };
     eframe::run_native("Octra Wallet App", options, Box::new(|cc| Box::new(WalletApp::new(cc))))
 }
-
-
 
 //Code at https://github.com/maragung/
