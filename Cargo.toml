@@ -1,0 +1,24 @@
+[package]
+name = "octra_wallet_gui"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+eframe = "0.27.2" # Framework GUI
+tokio = { version = "1.32", features = ["full"] }
+reqwest = { version = "0.11", features = ["json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+base64 = "0.21"
+ed25519-dalek = "2.0" 
+hex = "0.4"
+sha2 = "0.10"
+rand = "0.8"
+chrono = "0.4" 
+glob = "0.3"
+bip39 = "2.0"
+hmac = "0.12"
+bs58 = "0.5"
+rfd = "0.12"
+arboard = "3.3"
