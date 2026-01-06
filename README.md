@@ -1,107 +1,95 @@
-Octra Wallet Manager
+# Octra Wallet Manager
 
-Octra Wallet Manager is a GUI-based desktop application built with Rust for managing wallets on the Octra network. Designed for high efficiency, it allows users to manage hundreds of wallet files, perform batch transactions, and monitor balances in real-time.
+Octra Wallet Manager is a comprehensive desktop GUI management tool for the Octra network, built using Rust. It is designed to handle multiple wallet files efficiently, enabling mass transactions and real-time monitoring of various accounts from a single interface.
 
-🚀 Key Features
+## 🚀 Key Features
 
-1. Wallet Management
+### 1. Wallet Management
 
-Dynamic Loading: Automatically scans and loads .json wallet files from the /wallets folder.
+* **Dynamic Loading**: Automatically scans and imports JSON wallet files from the `/wallets` directory upon startup.
+* **Natural Sorting**: Smart file sorting ensures `wallet_2` appears before `wallet_10`.
+* **Wallet Generator**: Built-in utility to create new Octra wallets using BIP-39 mnemonics and Ed25519 derivation.
+* **Key Verification**: Mathematical validation tool to check the consistency between private keys, public keys, and derived addresses.
 
-Natural Sorting: Intelligent filename sorting (e.g., wallet_2 appears before wallet_10).
+### 2. Transaction Capabilities
 
-Wallet Generator: Built-in tool to generate new wallets using BIP-39 mnemonics and Ed25519 key derivation.
+* **Batch Sending**: Send specific amounts of assets from a range of wallets to a single target address.
+* **Sweep Modes**:
+* **Sweep to Target**: Consolidate funds from multiple wallets into one "Master" address.
+* **Sweep to Random**: Distribute funds to a random selection of addresses from `MyWallet.txt`.
 
-Key Verification: Validation utility to ensure the mathematical consistency between private keys, public keys, and generated addresses.
 
-2. Transaction Capabilities
+* **Automated Nonce Management**: Automatically fetches the latest nonce and accounts for local pending transactions to prevent sequence collisions.
 
-Batch Sending: Send specific amounts from a defined range of wallets to a single destination address.
+### 3. Monitoring & Tools
 
-Advanced Sweep Modes:
+* **Global Balance Checker**: A specialized dashboard to view and filter balances across all loaded wallets at once.
+* **Real-time Logs**: Detailed execution logs including transaction hashes, RPC responses, and error reporting.
+* **Target Info**: Query the balance and nonce of any remote address without needing to import its private key.
+* **Export Utilities**: Export filtered lists of wallet filenames or addresses to `.txt` files.
 
-Sweep to Target: Empty balances from multiple wallets into one "Master" address.
+### 4. Customization
 
-Sweep to Random: Distribute funds to random addresses listed in MyWallet.txt.
+* **Theming**: Full support for Dark and Light display modes.
+* **RPC Configuration**: Use wallet-specific RPC URLs or override them with a global default endpoint.
+* **UI Scaling**: Adjustable zoom levels for different high-resolution monitor setups.
 
-Automated Nonce Management: Automatically fetches the latest nonce and accounts for pending transactions in the local queue to prevent transaction collisions.
+---
 
-3. Monitoring & Tools
+## 🛠 Built with Gemini AI
 
-Global Balance Checker: A dedicated window to monitor and filter balances across all loaded wallets.
+This application was developed with the assistance of **Gemini AI**. AI was utilized to optimize structural logic, ensure memory safety through Rust best practices, and accelerate the development of complex cryptographic signing features.
 
-Real-time Logs: Detailed logs covering transaction hashes, RPC responses, and execution status.
+### Security & Transparency
 
-Target Info: Look up balance and nonce information for any destination address without needing to import its private key.
+Since this application processes private keys, transparency is paramount:
 
-Export Utilities: Export filtered lists of filenames or wallet addresses to .txt files.
+* **Auditability**: The source code is open for review. You can verify in `main.rs` that private keys are used only for local signing and are never transmitted to any third party other than your specified RPC node.
+* **Manual Build**: To ensure the binary matches the source code exactly, users are encouraged to **build the project manually**. This eliminates risks associated with pre-compiled binaries from unknown sources.
 
-4. UI/UX Customization
+---
 
-Dark/Light Modes: Full support for dark and light visual themes.
+## 📖 How to Use
 
-RPC Configuration: Configure RPC endpoints per wallet or use a single global RPC for all accounts.
+### 1. Setup
 
-UI Scaling: Adjustable zoom levels to fit various screen resolutions.
-
-🛠 Developed with Gemini AI
-
-This codebase was developed in collaboration with Gemini AI. Utilizing AI assisted in designing efficient logic structures and writing safe Rust boilerplate, accelerating the implementation of complex cryptographic features.
-
-Authenticity & Security (Audit & Build)
-
-The security of your private keys is the top priority. To ensure transparency:
-
-Code Audit: You can directly inspect main.rs to verify that private keys are processed locally for transaction signing and are never sent to any server other than your chosen RPC endpoint.
-
-Verify Binary: If you have concerns regarding the authenticity of a provided executable (.exe), you are highly encouraged to build the application yourself from the source code using the official Rust toolchain.
-
-📖 How to Use
-
-1. Initial Preparation
-
-Create a folder named wallets in the same directory as the application.
-
-Save your JSON wallet files inside that folder using the following format:
-
+1. Create a folder named `wallets` in the same directory as the application.
+2. Place your wallet files (JSON) inside. Format:
+```json
 {
-  "priv": "PRIVATE_KEY_BASE64",
+  "priv": "YOUR_PRIVATE_KEY_BASE64",
   "addr": "oct_ADDRESS",
   "rpc": ""
 }
 
+```
 
-(Optional) Create MyWallet.txt if you intend to use the "Sweep to Random" feature.
 
-2. Basic Operations
+3. (Optional) Populate `MyWallet.txt` with a list of addresses if you plan to use the random sweep feature.
 
-Load Wallets: Click Reload Wallets to refresh the list after adding new files.
+### 2. Basic Operations
 
-Check Balances: Use the Tools > Check All Balances menu to monitor all funds.
+* **Load**: Click **Reload Wallets** to refresh the list.
+* **Check**: Navigate to **Tools > Check All Balances** for a summary of all funds.
+* **Send**: Enter a target address and amount, then select the range of wallets to use for the batch.
 
-Input Transaction: Enter the destination in the Target Address field and the amount in the Amount field.
+---
 
-3. Batch Execution
+## 🏗 Build Instructions
 
-Set the Start Index (starting point, e.g., 0) and the Wallet Count (number of wallets to process).
+To verify the integrity of the binary, build it yourself:
 
-Select your mode (Send, Sweep Target, or Sweep Random).
-
-Click Execute Transaction and monitor the progress bar.
-
-🏗 Build Instructions
-
-To ensure the binary you use is 100% identical to this source code, follow these steps:
-
-Install Rust & Cargo.
-
-Open a terminal in the project folder.
-
-Run the command:
-
+1. Install [Rust](https://rustup.rs/).
+2. Open your terminal in the project directory.
+3. Run the following command:
+```bash
 cargo build --release
 
+```
 
-The ready-to-use binary will be located in the target/release/ folder.
+
+4. The generated file will be in `target/release/`.
+
+---
 
 Developed by Maragung.
